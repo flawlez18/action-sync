@@ -2,29 +2,30 @@ name: Installer
 on: [push]
 jobs:
   
-  name: test-repo
-  runs-on: ubuntu-latest
-
-  steps:
-  - name: check-repo
-    env: 
-      REPO_URL: https://github.com/flawlez18/pythons-projects.git
-    run: | 
-      #!/bin/bash
-      if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
-        echo "repository is present"
-      else
-        echo "repository is not found"
-        exit 1 
-      fi
-
-  build:
-
+  test-repo:
     runs-on: ubuntu-latest
 
+    steps:
+    - name: check-repo
+      env: 
+        REPO_URL: https://github.com/flawlez18/pythons-projects.git
+      run: | 
+        #!/bin/bash
+        if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
+          echo "repository is present"
+        else
+          echo "repository is not found"
+          exit 1 
+        fi
+
+  build:
+    needs: test-repo
+    runs-on: ubuntu-latest
+    
 
     steps:
     - name: Action-sync
+
       run: |
         #!/bin/bash
         FOLDER=$(mktemp -d)
