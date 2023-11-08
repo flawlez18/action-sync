@@ -1,13 +1,28 @@
 name: Installer
 on: [push]
 jobs:
+  
+  name: test-repo
+  runs-on: ubuntu-latest
+
+  steps:
+  - name: check-repo
+    env: 
+      REPO_URL: https://github.com/flawlez18/pythons-projects.git
+    run: | 
+    #!/bin/bash
+    if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
+      echo "repository is present"
+    else
+      echo "repository is not found"
+      exit 1 
+    fi
+
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [18]
-          
+
+
     steps:
     - name: Action-sync
       run: |
@@ -25,4 +40,4 @@ jobs:
           --destination-url "https://durghetest.cec.lab.emc.com/" \
           --repo-name "actions/stale:KaaS/demo-ghactions"
         rm -r "${FOLDER}"
-        echo " It is done"
+        
