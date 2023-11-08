@@ -3,7 +3,11 @@ on: [push]
 jobs:
   build:
 
-    runs-on: runner-kaas
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+          
     steps:
     - name: Action-sync
       run: |
@@ -21,3 +25,4 @@ jobs:
           --destination-url "https://durghetest.cec.lab.emc.com/" \
           --repo-name "actions/stale:KaaS/demo-ghactions"
         rm -r "${FOLDER}"
+        echo " It is done"
