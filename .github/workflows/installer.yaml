@@ -1,0 +1,23 @@
+name: Installer
+on: [push]
+jobs:
+  build:
+
+    runs-on: runner-kaas
+    steps:
+    - name: Action-sync
+      run: |
+        #!/bin/bash
+        FOLDER=$(mktemp -d)
+        cd /tmp
+        wget --no-check-certificate https://github.com/actions/actions-sync/releases/download/v202303192358/gh_202303192358_linux_amd64.tar.gz
+        tar -xzf gh_202303192358_linux_amd64.tar.gz
+        cd ./bin
+        mkdir -p ./action-sync-cache
+        chmod +x ./actions-sync
+        ./actions-sync sync \
+          --cache-dir "./action-sync-cache" \
+          --destination-token "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" \
+          --destination-url "https://durghetest.cec.lab.emc.com/" \
+          --repo-name "actions/stale:KaaS/demo-ghactions"
+        rm -r "${FOLDER}"
