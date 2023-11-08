@@ -10,13 +10,13 @@ jobs:
     env: 
       REPO_URL: https://github.com/flawlez18/pythons-projects.git
     run: | 
-    #!/bin/bash
-    if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
-      echo "repository is present"
-    else
-      echo "repository is not found"
-      exit 1 
-    fi
+      #!/bin/bash
+      if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
+        echo "repository is present"
+      else
+        echo "repository is not found"
+        exit 1 
+      fi
 
   build:
 
