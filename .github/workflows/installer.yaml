@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: check-repo
       env: 
-        REPO_URL: https://github.com/flawlez18/pythons-projects.git
+        REPO_URL: https://github.com/flawlez18/python-projects.git
       run: | 
         #!/bin/bash
         if git ls-remote -h "$REPO_URL" > /dev/null 2>&1; then
@@ -21,7 +21,7 @@ jobs:
   build:
     needs: test-repo
     runs-on: ubuntu-latest
-    
+
 
     steps:
     - name: Action-sync
