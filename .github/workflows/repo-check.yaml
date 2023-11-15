@@ -1,0 +1,41 @@
+name: Check if target local repository exists
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_call:
+
+jobs:
+  pr_check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: KaaS/checkout@v4
+    - name: Check if target local repository exists
+      id: check-local-repo
+      run: | 
+        #!/usr/bin/env bash
+        [[ ! $(command -v git) ]] && sudo apt install -y git
+        [[ ! $(command -v curl) ]] && sudo apt install -y curl
+        if [[ -f ./newactions ]]; then
+          while read remote local; do
+            echo "$remote - $local";
+            declare -i CODE=$(curl -sIko /dev/null --url ${{github.api_url}}/repos/${local} --header "Authorization: Bearer ${{ secrets.TOKEN }}" -w "%{http_code}")
+            echo "Result HTTP code - ${CODE}"
+            case "${CODE}" in
+              200)
+                echo "Target repository exists"
+                exit 1
+                ;;
+              404)
+                echo "Target repository doesn't exists"
+                ;;
+              *)
+                echo "Something went wrong, please check token permissions"
+                exit 1
+                ;;
+            esac
+          done <<< $(awk -F: '{print$1" "$2}' ./newactions)
+        else
+          echo "No file with new actions to sync found"
+          exit 0
+        fi
