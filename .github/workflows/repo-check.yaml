@@ -39,3 +39,5 @@ jobs:
           echo "No file with new actions to sync found"
           exit 0
         fi
+
+        #code is complete
