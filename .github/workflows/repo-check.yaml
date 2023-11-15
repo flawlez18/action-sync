@@ -9,7 +9,7 @@ jobs:
   pr_check:
     runs-on: ubuntu-latest
     steps:
-    - uses: KaaS/checkout@v4
+    - uses: actions/checkout@v4
     - name: Check if target local repository exists
       id: check-local-repo
       run: | 
